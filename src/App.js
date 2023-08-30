@@ -1,5 +1,3 @@
-import logo from "./logo.svg";
-import "./App.css";
 import { useState } from "react";
 import Select from "./components/Select";
 import Input from "./components/Input";
