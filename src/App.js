@@ -67,7 +67,7 @@ function App() {
                   onChange={onItemDescriptionChange}
                 />
               </div>
-              <Select onChange={onCategoryChange} />
+              <Select options={["food", "health", "housing","sport","education","transportation"]} onChange={onCategoryChange} />
               <Input type="submit" onChange={() => false} placeHolder="Add item" />
             </form>
             <hr />

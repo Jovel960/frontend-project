@@ -1,4 +1,4 @@
-const Select = ({ onChange }) => {
+const Select = ({ onChange, options }) => {
   return (
     <select
       style={{ display: "block" }}
@@ -6,12 +6,7 @@ const Select = ({ onChange }) => {
       id="categories"
       onChange={onChange}
     >
-      <option value="food">Food</option>
-      <option value="health">Health</option>
-      <option value="housing">Housing</option>
-      <option value="sport">Sport</option>
-      <option value="education">Education</option>
-      <option value="transportation">Transportation</option>
+    {options?.map((option, i) => <option value={option}>{option[0].toUpperCase() + option.slice(1)}</option>)}
     </select>
   );
 };
