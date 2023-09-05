@@ -3,7 +3,7 @@ const Input = ({type, onChange, placeHolder, inputValue,maxWidth }) => {
     <input
       type={type}
       style={{
-        maxWidth: maxWidth ? "120px" : "",
+        maxWidth: maxWidth ? "140px" : "",
         marginLeft:  maxWidth ? "15px" : "auto",
         marginRight: maxWidth ? "" : "auto",
         marginTop: "10px",

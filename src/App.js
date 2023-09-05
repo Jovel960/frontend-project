@@ -20,24 +20,23 @@ function App() {
     const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
     setCostDate(`${currentYear}-${currentMonth}`);
   }, []);
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         const monthlyCosts = await storage.getCostsByMonthAndYear(costDate); // costDate is in "YYYY-MM" format
-        console.log(monthlyCosts);
         setCosts(monthlyCosts);
       } catch (error) {
         console.error("Error fetching initial data:", error);
       }
     };
-
-    fetchInitialData();
+    if (costDate) fetchInitialData();
   }, [costDate]);
 
   const onCostItemChange = ({ target }) => setCostItem(target.value);
 
   const onSumOfItemChange = ({ target }) =>
-    setSumOfItem(parseFloat(target.value));
+    setSumOfItem(target.value);
 
   const onCategoryChange = ({ target }) => setCategoryOfItems(target.value);
 
@@ -57,7 +56,6 @@ function App() {
       itemDescription,
       date: costDate,
     };
-    console.log(data);
     storage
       .addData(data)
       .then((id) => {
@@ -66,7 +64,6 @@ function App() {
       .catch((error) => {
         console.error("Error adding data:", error);
       });
-    storage.getData(1).then((res) => console.log(res));
     setCostItem("");
     setSumOfItem("");
     setCategoryOfItems("");
