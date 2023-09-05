@@ -1,89 +1,209 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Select from "./components/Select";
 import Input from "./components/Input";
 import Button from "./components/Button";
-// import { StorageActions } from "./utilities/localStorage";
+import StorageActions from "./utilities/localStorage";
+import Modal from "./components/Modal/Modal";
+const storage = new StorageActions();
 function App() {
   const [costItem, setCostItem] = useState("");
   const [sumOfItem, setSumOfItem] = useState("");
-  const [categoryOfItem, setCategoryOfItems] = useState("");
+  const [categoryOfItem, setCategoryOfItems] = useState("Food");
   const [itemDescription, setItemDescription] = useState("");
-  const [costs, setCosts] = useState([])
+  const [costs, setCosts] = useState([]);
   const [costDate, setCostDate] = useState("");
+  const [modal, setModal] = useState(false);
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
+    setCostDate(`${currentYear}-${currentMonth}`);
+  }, []);
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const monthlyCosts = await storage.getCostsByMonthAndYear(costDate); // costDate is in "YYYY-MM" format
+        console.log(monthlyCosts);
+        setCosts(monthlyCosts);
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      }
+    };
+
+    fetchInitialData();
+  }, [costDate]);
 
   const onCostItemChange = ({ target }) => setCostItem(target.value);
 
-  const onSumOfItemChange = ({ target }) => setSumOfItem(target.value);
+  const onSumOfItemChange = ({ target }) =>
+    setSumOfItem(parseFloat(target.value));
 
   const onCategoryChange = ({ target }) => setCategoryOfItems(target.value);
 
   const onItemDescriptionChange = ({ target }) =>
     setItemDescription(target.value);
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      setCosts((prevCosts) => [...prevCosts, {costItem, sumOfItem, categoryOfItem, itemDescription}]);
-      setCostItem("");
-      setSumOfItem("");
-      setCategoryOfItems("");
-      setItemDescription("");
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setCosts((prevCosts) => [
+      ...prevCosts,
+      { costItem, sumOfItem, categoryOfItem, itemDescription },
+    ]);
+    const data = {
+      costItem,
+      sumOfItem: parseFloat(sumOfItem),
+      categoryOfItem,
+      itemDescription,
+      date: costDate,
+    };
+    console.log(data);
+    storage
+      .addData(data)
+      .then((id) => {
+        console.log("Data added with ID:", id);
+      })
+      .catch((error) => {
+        console.error("Error adding data:", error);
+      });
+    storage.getData(1).then((res) => console.log(res));
+    setCostItem("");
+    setSumOfItem("");
+    setCategoryOfItems("");
+    setItemDescription("");
+  };
 
-    const handleReport = () => false;
+  const handleReport = () => {
+    setModal(true);
+  };
 
-    const handleCostDate = (e) => setCostDate(e.target.value)
+  const handleCostDate = (e) => {
+    setCostDate(e.target.value);
+  };
 
-    const resetItems = () => setCosts([]);
+  // const resetItems = () => setCosts([]);
 
   return (
-    <div className="container">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          margin: "auto",
-          border: "2px",
-          borderColor: "black",
-        }}
-      >
-        <div id="main" className="card">
-          <div className="card-content">
-            <header className="">
-              <h2>Costs Manager Client Application</h2>
-            </header>
-            <form onSubmit={handleSubmit}>
-              <div className="input-field col s12">
-                <Input inputValue={costItem} type="text"
-                  placeHolder="New cost item"
-                  onChange={onCostItemChange}
+    <>
+      <div className="container">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "auto",
+            border: "2px",
+            borderColor: "black",
+          }}
+        >
+          <div id="main" className="card">
+            <div className="card-content">
+              <header style={{ display: "flex", flexDirection: "column" }}>
+                <img
+                  style={{
+                    style: "flex",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                  width="200"
+                  height="200"
+                  src="/images/image.jpg"
                 />
-              </div>
-              <div className="input-field col s12">
-                <Input inputValue={sumOfItem} type="text" placeHolder="Sum" onChange={onSumOfItemChange} />{" "}
-              </div>
-              <div className="input-field col s12">
-                <Input inputValue={itemDescription} text="text"
-                  placeHolder="Description"
-                  onChange={onItemDescriptionChange}
+                <h2
+                  style={{
+                    color: "darkblue",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                >
+                  Costs Manager Client Application
+                </h2>
+              </header>
+              <form onSubmit={handleSubmit}>
+                <div className="input-field col s12">
+                  <Input
+                    inputValue={costItem}
+                    type="text"
+                    placeHolder="New cost item"
+                    onChange={onCostItemChange}
+                  />
+                </div>
+                <div className="input-field col s12">
+                  <Input
+                    inputValue={sumOfItem}
+                    type="text"
+                    placeHolder="Sum"
+                    onChange={onSumOfItemChange}
+                  />
+                </div>
+                <div className="input-field col s12">
+                  <Input
+                    inputValue={itemDescription}
+                    text="text"
+                    placeHolder="Description"
+                    onChange={onItemDescriptionChange}
+                  />
+                </div>
+                <Select
+                  options={[
+                    "food",
+                    "health",
+                    "housing",
+                    "sport",
+                    "education",
+                    "transportation",
+                  ]}
+                  onChange={onCategoryChange}
                 />
-              </div>
-              <Select options={["food", "health", "housing","sport","education","transportation"]} onChange={onCategoryChange} />
-              <Input type="submit" onChange={() => false} placeHolder="Add item" />
-            </form>
-            <hr />
-            <h4>Costs</h4>
-            <ul>
-            {costs?.map((costItem, i) => <li key={i}>{costItem.costItem}</li>)}
-            </ul>
-            <Button handleClick={resetItems} placeHolder="Clear costs" className="waves-light clear-costs btn black"/>
-            <span style={{display:"flex", marginTop:"10px"}}>
-            <Button handleClick={handleReport} placeHolder="Report" className="waves-light btn" />
-            <Input type="month" onChange={handleCostDate} />
-            </span>
+                <Input
+                  type="submit"
+                  onChange={() => false}
+                  placeHolder="Add item"
+                />
+              </form>
+              <hr />
+              <h4>Costs</h4>
+              <ul>
+                {costs?.map((costItem, i) => (
+                  <li key={i}>{costItem.costItem}</li>
+                ))}
+              </ul>
+              {/* <Button
+                handleClick={resetItems}
+                placeHolder="Clear costs"
+                className="waves-light clear-costs btn black"
+              /> */}
+              <span
+                style={{
+                  display: "flex",
+                  marginTop: "10px",
+                  alignItems: "center",
+                }}
+              >
+                <Button
+                  handleClick={handleReport}
+                  placeHolder="Report"
+                  className="waves-light btn"
+                />
+                <Input
+                  maxWidth
+                  inputValue={costDate}
+                  type="month"
+                  onChange={handleCostDate}
+                />
+              </span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      {modal && (
+        <Modal
+          isOpen={modal}
+          onClose={() => setModal(false)}
+          costs={costs}
+          date={costDate}
+        />
+      )}
+    </>
   );
 }
 

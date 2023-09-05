@@ -1,10 +1,11 @@
-const Input = ({type, onChange, placeHolder, inputValue }) => {
+const Input = ({type, onChange, placeHolder, inputValue,maxWidth }) => {
   return (
     <input
       type={type}
       style={{
-        marginLeft: "auto",
-        marginRight: "auto",
+        maxWidth: maxWidth ? "120px" : "",
+        marginLeft:  maxWidth ? "15px" : "auto",
+        marginRight: maxWidth ? "" : "auto",
         marginTop: "10px",
         marginBottom: "10px",
       }}

@@ -6,7 +6,7 @@ const Select = ({ onChange, options }) => {
       id="categories"
       onChange={onChange}
     >
-    {options?.map((option, i) => <option value={option}>{option[0].toUpperCase() + option.slice(1)}</option>)}
+    {options?.map((option, i) => <option key={i} value={option}>{option[0].toUpperCase() + option.slice(1)}</option>)}
     </select>
   );
 };
