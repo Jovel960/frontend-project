@@ -35,8 +35,7 @@ function App() {
 
   const onCostItemChange = ({ target }) => setCostItem(target.value);
 
-  const onSumOfItemChange = ({ target }) =>
-    setSumOfItem(target.value);
+  const onSumOfItemChange = ({ target }) => setSumOfItem(target.value);
 
   const onCategoryChange = ({ target }) => setCategoryOfItems(target.value);
 
@@ -59,15 +58,14 @@ function App() {
     storage
       .addData(data)
       .then((id) => {
-        console.log("Data added with ID:", id);
+        setCostItem("");
+        setSumOfItem("");
+        setCategoryOfItems("");
+        setItemDescription("");
       })
       .catch((error) => {
         console.error("Error adding data:", error);
       });
-    setCostItem("");
-    setSumOfItem("");
-    setCategoryOfItems("");
-    setItemDescription("");
   };
 
   const handleReport = () => {
