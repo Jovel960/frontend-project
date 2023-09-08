@@ -15,7 +15,9 @@ export default class StorageActions {
         objectStore.createIndex("itemDescription", "itemDescription", {
           unique: false,
         });
-        objectStore.createIndex("categoryOfItem", "categoryOfItem", { unique: false });
+        objectStore.createIndex("categoryOfItem", "categoryOfItem", {
+          unique: false,
+        });
         objectStore.createIndex("date", "date", { unique: false });
       };
 
@@ -35,7 +37,7 @@ export default class StorageActions {
         .then((db) => {
           const transaction = db.transaction(["userCosts"], "readwrite");
           const objectStore = transaction.objectStore("userCosts");
-
+          if (!data.date) data.date = new Date();
           const addRequest = objectStore.add(data);
 
           addRequest.onsuccess = () => {
@@ -55,21 +57,21 @@ export default class StorageActions {
         });
     });
   }
-  getData(id) {
+  getAllData() {
     return new Promise((resolve, reject) => {
       this.openIDBDatabase()
         .then((db) => {
           const transaction = db.transaction(["userCosts"], "readonly");
           const objectStore = transaction.objectStore("userCosts");
 
-          const getRequest = objectStore.get(id);
+          const getAllRequest = objectStore.getAll();
 
-          getRequest.onsuccess = () => {
-            resolve(getRequest.result);
+          getAllRequest.onsuccess = () => {
+            resolve(getAllRequest.result);
           };
 
-          getRequest.onerror = () => {
-            reject(getRequest.error);
+          getAllRequest.onerror = () => {
+            reject(getAllRequest.error);
           };
 
           transaction.oncomplete = () => {

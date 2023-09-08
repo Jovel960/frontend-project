@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 import Button from "../Button";
-
+import Costs from "../Costs";
 function Modal({ isOpen, onClose, costs, date }) {
   if (!isOpen) return null;
 
@@ -9,16 +9,7 @@ function Modal({ isOpen, onClose, costs, date }) {
     <div className="modal-overlay">
       <div className="modal-content">
         <h4 className="modal-h4">Report of {date}</h4>
-        <ol className="modal-ul">
-          {costs.map((cost, i) => (
-            <li key={i}>
-              {cost.costItem + " ," +
-                cost.sumOfItem + " ," +
-                cost.categoryOfItem + " ," +
-                cost.itemDescription}
-            </li>
-          ))}
-        </ol>
+        <Costs costs={costs} />
         <div className="modal-footer">
           <Button
             placeHolder="Close"
