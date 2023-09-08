@@ -55,7 +55,7 @@ function App() {
       date: costDate,
     };
     storage
-      .addData(data)
+      .addCost(data)
       .then((id) => {
         setCostItem("");
         setSumOfItem("");
@@ -135,6 +135,7 @@ function App() {
                 onChange={onCategoryChange}
               />
               <Input
+              className="waves-light btn"
                 type="submit"
                 onChange={() => false}
                 placeHolder="Add item"

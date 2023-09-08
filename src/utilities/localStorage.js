@@ -1,8 +1,8 @@
 export default class StorageActions {
   //Store in ls
-  openIDBDatabase() {
+  openCostsDB() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open("userCostsDB", 1);
+      const request = indexedDB.open("costsdb", 1);
 
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
@@ -31,13 +31,20 @@ export default class StorageActions {
     });
   }
 
-  addData(data) {
+  addCost(data) {
     return new Promise((resolve, reject) => {
-      this.openIDBDatabase() // Use 'this' to call the method
+      this.openCostsDB() // Use 'this' to call the method
         .then((db) => {
+          let currentYear;
+          let currentMonth;
           const transaction = db.transaction(["userCosts"], "readwrite");
           const objectStore = transaction.objectStore("userCosts");
-          if (!data.date) data.date = new Date();
+          if (!data.date) {
+            const currentDate = new Date();
+            currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
+            currentYear = currentDate.getFullYear();
+            data.date = `${currentYear}-${currentMonth}`;
+          }
           const addRequest = objectStore.add(data);
 
           addRequest.onsuccess = () => {
@@ -59,7 +66,7 @@ export default class StorageActions {
   }
   getAllData() {
     return new Promise((resolve, reject) => {
-      this.openIDBDatabase()
+      this.openCostsDB()
         .then((db) => {
           const transaction = db.transaction(["userCosts"], "readonly");
           const objectStore = transaction.objectStore("userCosts");
@@ -86,7 +93,7 @@ export default class StorageActions {
 
   getCostsByMonthAndYear(yearMonth) {
     return new Promise((resolve, reject) => {
-      this.openIDBDatabase()
+      this.openCostsDB()
         .then((db) => {
           const transaction = db.transaction(["userCosts"], "readonly");
           const objectStore = transaction.objectStore("userCosts");
