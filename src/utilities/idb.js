@@ -1,6 +1,6 @@
 const idb = {
   //Store in ls
-  openCostsDB: async function (dbName = "costsdb", vesrion = 1) {
+  openCostsDB: function (dbName = "costsdb", vesrion = 1) {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(dbName, vesrion);
 
@@ -30,7 +30,7 @@ const idb = {
       };
     });
   },
-  addCost: async function (data) {
+  addCost: function (data) {
     return new Promise((resolve, reject) => {
       this.openCostsDB() // Use 'this' to call the method
         .then((db) => {
@@ -63,7 +63,7 @@ const idb = {
         });
     });
   },
-  getAllData: async function () {
+  getAllData: function () {
     return new Promise((resolve, reject) => {
       this.openCostsDB()
         .then((db) => {
@@ -89,7 +89,7 @@ const idb = {
         });
     });
   },
-  getCostsByMonthAndYear: async function (yearMonth) {
+  getCostsByMonthAndYear: function (yearMonth) {
     return new Promise((resolve, reject) => {
       this.openCostsDB()
         .then((db) => {
