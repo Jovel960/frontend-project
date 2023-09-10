@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import Select from "./components/Select";
 import Input from "./components/Input";
 import Button from "./components/Button";
-import StorageActions from "./utilities/localStorage";
 import Modal from "./components/Modal/Modal";
 import Costs from "./components/Costs";
-const storage = new StorageActions();
+import idb from "./utilities/idb";
 function App() {
   const [costItem, setCostItem] = useState("");
   const [sumOfItem, setSumOfItem] = useState("");
@@ -19,7 +18,7 @@ function App() {
   useEffect(() => {
     const getCosts = async () => {
       try {
-        const costsData = await storage.getAllData(); // costDate is in "YYYY-MM" format
+        const costsData = await idb.getAllData(); // costDate is in "YYYY-MM" format
         setCosts(costsData);
       } catch (error) {
         alert("Error fetching initial data");
@@ -54,7 +53,7 @@ function App() {
       itemDescription,
       date: costDate,
     };
-    storage
+    idb
       .addCost(data)
       .then((id) => {
         setCostItem("");
@@ -69,7 +68,7 @@ function App() {
 
   const handleReport = async () => {
     try {
-      const monthlyCosts = await storage.getCostsByMonthAndYear(costDate); // costDate is in "YYYY-MM" format
+      const monthlyCosts = await idb.getCostsByMonthAndYear(costDate); // costDate is in "YYYY-MM" format
       setReportCosts(monthlyCosts);
     } catch (error) {
       alert("Error fetching initial data");

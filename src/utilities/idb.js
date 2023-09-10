@@ -1,6 +1,6 @@
-export default class StorageActions {
+const idb = {
   //Store in ls
-  openCostsDB() {
+  openCostsDB: async function (dbName, vesrion) {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open("costsdb", 1);
 
@@ -29,9 +29,8 @@ export default class StorageActions {
         reject(request.error);
       };
     });
-  }
-
-  addCost(data) {
+  },
+  addCost: async function (data) {
     return new Promise((resolve, reject) => {
       this.openCostsDB() // Use 'this' to call the method
         .then((db) => {
@@ -63,8 +62,8 @@ export default class StorageActions {
           reject(error);
         });
     });
-  }
-  getAllData() {
+  },
+  getAllData: async function () {
     return new Promise((resolve, reject) => {
       this.openCostsDB()
         .then((db) => {
@@ -89,9 +88,8 @@ export default class StorageActions {
           reject(error);
         });
     });
-  }
-
-  getCostsByMonthAndYear(yearMonth) {
+  },
+  getCostsByMonthAndYear: async function (yearMonth) {
     return new Promise((resolve, reject) => {
       this.openCostsDB()
         .then((db) => {
@@ -113,5 +111,7 @@ export default class StorageActions {
           reject(error);
         });
     });
-  }
-}
+  },
+};
+
+export default idb;
