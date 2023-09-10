@@ -5,8 +5,8 @@ export default function Costs({ costs }) {
         <ol className="modal-ul">
           {costs.map((cost, i) => (
             <li key={i}>
-              {cost.costItem[0].toUpperCase() +
-                cost.costItem.slice(1) +
+              {cost?.costItem[0]?.toUpperCase() +
+                cost?.costItem.slice(1) +
                 " ," +
                 cost.sumOfItem +
                 " ," +

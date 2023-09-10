@@ -1,8 +1,8 @@
 const idb = {
   //Store in ls
-  openCostsDB: async function (dbName, vesrion) {
+  openCostsDB: async function (dbName = "costsdb", vesrion = 1) {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open("costsdb", 1);
+      const request = indexedDB.open(dbName, vesrion);
 
       request.onupgradeneeded = (event) => {
         const db = event.target.result;

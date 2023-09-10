@@ -42,6 +42,10 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(!costItem || !sumOfItem || !categoryOfItem || !itemDescription) {
+      alert("Data is missing!");
+      return;
+    }
     setCosts((prevCosts) => [
       ...prevCosts,
       { costItem, sumOfItem, categoryOfItem, itemDescription },
