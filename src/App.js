@@ -5,6 +5,7 @@ import Button from "./components/Button";
 import Modal from "./components/Modal/Modal";
 import Costs from "./components/Costs";
 import idb from "./utilities/idb";
+import getDate from "./utilities/helpers";
 function App() {
   const [costItem, setCostItem] = useState("");
   const [sumOfItem, setSumOfItem] = useState("");
@@ -24,10 +25,7 @@ function App() {
         alert("Error fetching initial data");
       }
     };
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
-    setCostDate(`${currentYear}-${currentMonth}`);
+    setCostDate(getDate());
     getCosts();
   }, []);
 
@@ -42,7 +40,7 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(!costItem || !sumOfItem || !categoryOfItem || !itemDescription) {
+    if (!costItem || !sumOfItem || !categoryOfItem || !itemDescription) {
       alert("Data is missing!");
       return;
     }
@@ -138,7 +136,7 @@ function App() {
                 onChange={onCategoryChange}
               />
               <Input
-              className="waves-light btn"
+                className="waves-light btn"
                 type="submit"
                 onChange={() => false}
                 placeHolder="Add item"
@@ -146,7 +144,7 @@ function App() {
             </form>
             <hr />
             <h4>Costs</h4>
-           <Costs costs={costs} />
+            <Costs costs={costs} />
             <span
               style={{
                 display: "flex",

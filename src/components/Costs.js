@@ -1,7 +1,7 @@
 export default function Costs({ costs }) {
   return (
     <>
-      {costs.length > 0 ? (
+      {costs?.length > 0 ? (
         <ol className="modal-ul">
           {costs.map((cost, i) => (
             <li key={i}>

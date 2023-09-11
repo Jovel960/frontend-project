@@ -1,3 +1,4 @@
+import getDate from "./helpers";
 const idb = {
   //Store in ls
   openCostsDB: function (dbName = "costsdb", vesrion = 1) {
@@ -34,15 +35,10 @@ const idb = {
     return new Promise((resolve, reject) => {
       this.openCostsDB() // Use 'this' to call the method
         .then((db) => {
-          let currentYear;
-          let currentMonth;
           const transaction = db.transaction(["userCosts"], "readwrite");
           const objectStore = transaction.objectStore("userCosts");
-          if (!data.date) {
-            const currentDate = new Date();
-            currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
-            currentYear = currentDate.getFullYear();
-            data.date = `${currentYear}-${currentMonth}`;
+          if (!data.date) {            
+            data.date = getDate();
           }
           const addRequest = objectStore.add(data);
 
