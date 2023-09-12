@@ -1,3 +1,4 @@
+//Get date helper function
 function getDate() {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();

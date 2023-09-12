@@ -1,3 +1,4 @@
+//Input component
 const Input = ({
   type,
   onChange,

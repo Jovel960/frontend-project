@@ -2,6 +2,7 @@ import React from "react";
 import "./style.css";
 import Button from "../Button";
 import Costs from "../Costs";
+//Modal component
 function Modal({ isOpen, onClose, costs, date }) {
   if (!isOpen) return null;
 

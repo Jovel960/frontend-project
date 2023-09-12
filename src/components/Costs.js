@@ -1,3 +1,4 @@
+//Costs component
 export default function Costs({ costs }) {
   return (
     <>

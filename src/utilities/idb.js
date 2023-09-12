@@ -31,6 +31,7 @@ const idb = {
       };
     });
   },
+  //Adding cost
   addCost: function (data) {
     return new Promise((resolve, reject) => {
       this.openCostsDB() // Use 'this' to call the method
@@ -59,6 +60,7 @@ const idb = {
         });
     });
   },
+  //Fetching all costs
   getAllData: function () {
     return new Promise((resolve, reject) => {
       this.openCostsDB()
@@ -85,6 +87,7 @@ const idb = {
         });
     });
   },
+  //Fetching costs per year and month
   getCostsByMonthAndYear: function (yearMonth) {
     return new Promise((resolve, reject) => {
       this.openCostsDB()

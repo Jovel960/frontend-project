@@ -7,6 +7,7 @@ import Costs from "./components/Costs";
 import idb from "./utilities/idb";
 import getDate from "./utilities/helpers";
 function App() {
+  //Init states
   const [costItem, setCostItem] = useState("");
   const [sumOfItem, setSumOfItem] = useState("");
   const [categoryOfItem, setCategoryOfItems] = useState("Food");
@@ -16,6 +17,7 @@ function App() {
   const [reportCosts, setReportCosts] = useState([]);
   const [modal, setModal] = useState(false);
 
+  //Fetching all the costs
   useEffect(() => {
     const getCosts = async () => {
       try {
@@ -29,6 +31,8 @@ function App() {
     getCosts();
   }, []);
 
+  //Event handlers
+
   const onCostItemChange = ({ target }) => setCostItem(target.value);
 
   const onSumOfItemChange = ({ target }) => setSumOfItem(target.value);
@@ -37,6 +41,8 @@ function App() {
 
   const onItemDescriptionChange = ({ target }) =>
     setItemDescription(target.value);
+
+  const handleCostDate = (e) => setCostDate(e.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,6 +74,7 @@ function App() {
       });
   };
 
+  //Handle report
   const handleReport = async () => {
     try {
       const monthlyCosts = await idb.getCostsByMonthAndYear(costDate); // costDate is in "YYYY-MM" format
@@ -77,10 +84,6 @@ function App() {
     } finally {
       setModal(true);
     }
-  };
-
-  const handleCostDate = (e) => {
-    setCostDate(e.target.value);
   };
 
   return (
@@ -99,6 +102,7 @@ function App() {
                 Costs Manager Client Application
               </h2>
             </header>
+            {/* Cost Form */}
             <form onSubmit={handleSubmit}>
               <div className="input-field col s12">
                 <Input
@@ -167,6 +171,7 @@ function App() {
           </div>
         </div>
       </div>
+      {/* Report Modal */}
       <Modal
         isOpen={modal}
         onClose={() => setModal(false)}

@@ -1,3 +1,4 @@
+//Select component
 const Select = ({ onChange, options }) => {
   return (
     <select
