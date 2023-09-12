@@ -1,3 +1,4 @@
+//Yovel Hadad 207125329, Rotem Zagori 316389378, Nissim Cohen 308152537
 //Input component
 const Input = ({
   type,
