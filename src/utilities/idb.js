@@ -12,11 +12,11 @@ const idb = {
           autoIncrement: true,
         });
         objectStore.createIndex("costItem", "costItem", { unique: false });
-        objectStore.createIndex("sumOfItem", "sumOfItem", { unique: false });
-        objectStore.createIndex("itemDescription", "itemDescription", {
+        objectStore.createIndex("sum", "sum", { unique: false });
+        objectStore.createIndex("description", "description", {
           unique: false,
         });
-        objectStore.createIndex("categoryOfItem", "categoryOfItem", {
+        objectStore.createIndex("category", "category", {
           unique: false,
         });
         objectStore.createIndex("date", "date", { unique: false });
@@ -36,11 +36,11 @@ const idb = {
     return new Promise((resolve, reject) => {
       this.openCostsDB() // Use 'this' to call the method
         .then((db) => {
-          const transaction = db.transaction(["userCosts"], "readwrite");
-          const objectStore = transaction.objectStore("userCosts");
-          if (!data.date) {            
+           if (!data.date) {            
             data.date = getDate();
           }
+          const transaction = db.transaction(["userCosts"], "readwrite");
+          const objectStore = transaction.objectStore("userCosts");
           const addRequest = objectStore.add(data);
 
           addRequest.onsuccess = () => {

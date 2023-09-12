@@ -22,6 +22,7 @@ function App() {
     const getCosts = async () => {
       try {
         const costsData = await idb.getAllData(); // costDate is in "YYYY-MM" format
+        console.log(costsData);
         setCosts(costsData);
       } catch (error) {
         alert("Error fetching initial data");
